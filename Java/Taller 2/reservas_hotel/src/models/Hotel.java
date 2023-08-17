@@ -1,6 +1,6 @@
 package models;
 
-import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,26 +19,37 @@ public class Hotel {
         return nombre;
     }
 
-    public List<Habitacion> ListarHabitacionesDisponibles() {
+    public List<Habitacion> ListarHabitacionesDisponibles(LocalDate fechaInicio, LocalDate fechaFin) {
         List<Habitacion> habitacionesDisponibles = new ArrayList<Habitacion>();
         for (Habitacion habitacion : habitaciones) {
-            if (habitacion.getEstado() == EstadoHabitacion.DISPONIBLE) {
+            if (habitacion.estaDisponible(fechaInicio, fechaFin)) {
                 habitacionesDisponibles.add(habitacion);
             }
         }
         return habitacionesDisponibles;
     }
+/* 
+    public int consultarCantidadHabitacionesDisponibles() {
+        return ListarHabitacionesDisponibles().size();
+    } */
 
-    public Reserva[] listarReservas(){
-        return (Reserva[]) this.reservas.toArray();
+    public void realizarReserva(List<Habitacion> habitaciones, Cliente empresa, LocalDate fechaInicio,
+            LocalDate fechaFin) {
+        this.reservas.add(new Reserva(habitaciones, empresa, fechaInicio, fechaFin, this.reservas.size() + 1));
     }
-
-    public void realizarReserva(ArrayList<Habitacion> habitacionesRequeridas, Empresa empresa) {
-       this.reservas.add(new Reserva(habitacionesRequeridas, empresa));
-    }
-
+    
     public void cancelarReserva(Reserva reserva){
         reserva.setEstado(EstadoReserva.CANCELADA);
+    }
+
+    public void crearHabitaciones(Habitacion ... habitaciones){
+        for (Habitacion habitacion : habitaciones) {
+            this.habitaciones.add(habitacion);
+        }
+    }
+
+    public List<Reserva> getReservas() {
+        return reservas;
     }
 
 
