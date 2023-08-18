@@ -218,8 +218,9 @@ public class Menu {
 
     private void menuCancelarReserva(Scanner sc) {
         System.out.println("ingrese el nombre del hotel en el que reservó: ");
-        String nombreHotel = sc.next();
+        String nombreHotel = sc.nextLine();
         System.out.println("ingrese el numero de la reserva:");
+        sc.nextLine();
         int numeroReserva = sc.nextInt();
         Hotel hotel = this.buscarHotel(nombreHotel);
         if (hotel != null) {
